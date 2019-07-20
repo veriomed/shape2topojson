@@ -1,0 +1,25 @@
+{
+  "name": "shape2topojson",
+  "version": "1.0.0",
+  "description": "TIGER Shape (.shp) file to TopoJSON Convertor",
+  "main": "app_convertor.js",
+  "dependencies": {
+    "async": "^3.1.0",
+    "shpjs": "^3.3.1",
+    "topojson": "^1.6.20"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "TIGER",
+    "Shape",
+    "file",
+    ".shp",
+    "topojson",
+    "convertor"
+  ],
+  "author": "VERIOMED LLC",
+  "license": "UNLICENSED"
+}
