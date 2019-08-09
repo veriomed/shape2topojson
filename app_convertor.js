@@ -4,6 +4,15 @@ var http = require('http');
 var shpjs = require('shpjs');
 var topojson = require('topojson');
 var async = require('async');
+var zip_city_state = require('./zip_city_state.json');
+var gZipCodes = {};
+
+for(index in zip_city_state.data){
+	var mData = zip_city_state.data[index];
+	mData[0] = ("00000" + mData[0]).slice(-5)
+	gZipCodes[mData[0]] = {city: mData[1], state: mData[2]};
+}
+
 
 http.createServer(function (req, res) {
 	if(req.url.startsWith("/shapefiles/")){
@@ -43,6 +52,15 @@ fs.readdir("./../ZCTA_BY_USA_STATES/", function(err, files) {
 						  return feature.properties;
 						}
 					 });
+					 
+					 for(index in mTopoJSON.objects.geo.geometries){
+						 var mZip = mTopoJSON.objects.geo.geometries[index]["properties"]["ZCTA5CE10"];
+						 mTopoJSON.objects.geo.geometries[index]["properties"] = {"Z" : mZip, "C": (gZipCodes[mZip]) ? gZipCodes[mZip].city : ""};
+						 if(!gZipCodes[mZip]){
+							 console.log(mZip);
+						 }
+					 }
+					 
 					 var mTopoJSONStr = JSON.stringify(mTopoJSON);
 					 fs.writeFile(path.resolve('./topojson-raw-output/' + file.replace('.zip', '') + '.topojson'), mTopoJSONStr, function (err) {
 						fs.writeFile(path.resolve('./topojson-js-output/' + file.replace('.zip', '') + '.topojson.js'), "var gZIPTopoJSON=" + mTopoJSONStr, function (err){
@@ -62,8 +80,3 @@ fs.readdir("./../ZCTA_BY_USA_STATES/", function(err, files) {
 			 process.exit(0);
 		});
 });
-
-
-
-
-
