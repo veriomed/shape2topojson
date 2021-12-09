@@ -6,7 +6,7 @@ var topojson = require('topojson');
 var async = require('async');
 var zip_city_state = require('./zip_city_state.json');
 var gZipCodes = {};
-
+ 
 for(index in zip_city_state.data){
 	var mData = zip_city_state.data[index];
 	mData[0] = ("00000" + mData[0]).slice(-5)
